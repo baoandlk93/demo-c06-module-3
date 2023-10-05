@@ -3,16 +3,17 @@ package com.codegym.democ06.dao.impl;
 import com.codegym.democ06.dao.IProductDAO;
 import com.codegym.democ06.dao.MyConnection;
 import com.codegym.democ06.model.Product;
-import com.codegym.democ06.model.SubCategory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO implements IProductDAO {
     private static final String SELECT_ALL = "SELECT * FROM product WHERE is_delete = 0;";
+    private static final String INSERT = "insert into product(name,price,description,image,sub_category_id) values(?,?,?,?,?);";
 
     @Override
     public List<Product> findAll() {
@@ -48,7 +49,19 @@ public class ProductDAO implements IProductDAO {
 
     @Override
     public boolean save(Product object) {
-        return false;
+        Connection connection = MyConnection.getConnectDB();
+        try {
+            PreparedStatement  statement = connection.prepareStatement(INSERT);
+            statement.setString(1, object.getName());
+            statement.setString(2, object.getPrice());
+            statement.setString(3, object.getDescription());
+            statement.setString(4, object.getImage());
+            statement.setLong(5, object.getSubCategoryId());
+            int num = statement.executeUpdate();
+            return num == 1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

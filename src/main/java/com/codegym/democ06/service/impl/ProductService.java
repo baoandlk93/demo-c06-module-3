@@ -5,6 +5,8 @@ import com.codegym.democ06.dao.impl.ProductDAO;
 import com.codegym.democ06.model.Product;
 import com.codegym.democ06.service.IProductService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class ProductService implements IProductService {
@@ -22,6 +24,7 @@ public class ProductService implements IProductService {
 
     @Override
     public boolean save(Product object) {
+        productDAO.save(object);
         return false;
     }
 
@@ -33,5 +36,16 @@ public class ProductService implements IProductService {
     @Override
     public Product findById(Long id) {
         return null;
+    }
+
+    @Override
+    public boolean addProduct(HttpServletRequest req, HttpServletResponse resp) {
+       String name = req.getParameter("name");
+       String price = req.getParameter("price");
+       String description = req.getParameter("description");
+       String image = req.getParameter("image");
+       Long subCategoryId = Long.valueOf(req.getParameter("subCategoryId"));
+       Product product = new Product(name,price,description,image,subCategoryId);
+       return save(product);
     }
 }

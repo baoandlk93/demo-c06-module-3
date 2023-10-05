@@ -9,6 +9,14 @@ public class Product {
     private String image;
     private Long subCategoryId;
 
+
+    public Product(String name, String price, String description, String image, Long subCategory) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.image = image;
+        this.subCategoryId = subCategory;
+    }
     public Product(Long id, String name, String price, String description, String image, Long subCategory) {
         this.id = id;
         this.name = name;
